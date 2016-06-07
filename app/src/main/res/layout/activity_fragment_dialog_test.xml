@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="richard.ztesoft.com.wxalertdialoglibrary.FragmentDialogTestActivity">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingBottom="@dimen/activity_vertical_margin"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingTop="@dimen/activity_vertical_margin">
+            <Button
+                android:id="@+id/fragment_alert_dialog_self_design"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="自定义 Dialog"/>
+
+            <Button
+                android:id="@+id/fragment_alert_dialog_message"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/fragment_alert_dialog_self_design"
+                android:layout_marginTop="10dp"
+                android:text="普通AlertDialog Message"/>
+
+
+            <Button
+                android:id="@+id/fragment_alert_dialog_single_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/fragment_alert_dialog_message"
+                android:layout_marginTop="10dp"
+                android:text="普通AlertDialog 单个button"/>
+
+            <Button
+                android:id="@+id/fragment_alert_dialog_yes_no"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/fragment_alert_dialog_single_button"
+                android:layout_marginTop="10dp"
+                android:text="普通AlertDialog 确认，取消"/>
+
+            <Button
+                android:id="@+id/fragment_alert_dialog_three_buttons"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/fragment_alert_dialog_yes_no"
+                android:layout_marginTop="10dp"
+                android:text="普通AlertDialog 三个按钮"/>
+
+            <Button
+                android:id="@+id/fragment_alert_dialog_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/fragment_alert_dialog_three_buttons"
+                android:layout_marginTop="10dp"
+                android:text="普通AlertDialog list"/>
+
+            <Button
+                android:id="@+id/fragment_alert_dialog_radio_buttons"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/fragment_alert_dialog_list"
+                android:layout_marginTop="10dp"
+                android:text="普通AlertDialog RadioButton"/>
+
+            <Button
+                android:id="@+id/fragment_alert_dialog_check_box"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/fragment_alert_dialog_radio_buttons"
+                android:layout_marginTop="10dp"
+                android:text="普通AlertDialog checkbox"/>
+
+            <Button
+                android:id="@+id/fragment_alert_dialog_username_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/fragment_alert_dialog_check_box"
+                android:layout_marginTop="10dp"
+                android:text="普通AlertDialog 用户名密码输入"/>
+
+
+        </RelativeLayout>
+    </ScrollView>
+</RelativeLayout>
