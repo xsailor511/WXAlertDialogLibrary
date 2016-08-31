@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
+import android.view.ContextThemeWrapper;
 import android.view.MenuItem;
 
 import butterknife.ButterKnife;
@@ -67,9 +68,15 @@ public class FragmentDialogTestActivity extends AppCompatActivity implements
      */
     @OnClick(R.id.fragment_alert_dialog_message)
     public void fragmentMessageDialog(){
+        //保存全局配置
+        int tempTheme = WXDialogConfig.DIALOG_THEME;
+        WXDialogConfig.DIALOG_THEME = R.style.AlertDialogCustom;
         MessageDialogFragment messageDialogFragment = MessageDialogFragment.getInstance();
         messageDialogFragment.setInfos("消息","网络已经断开",R.mipmap.ic_launcher);
         messageDialogFragment.show(getSupportFragmentManager(), MessageDialogFragment.FRAGMENT_MANAGER_TAG);
+        //恢复全局配置
+        WXDialogConfig.DIALOG_THEME = tempTheme;
+
     }
 
 

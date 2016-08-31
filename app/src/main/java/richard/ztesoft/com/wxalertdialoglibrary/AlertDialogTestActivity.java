@@ -4,12 +4,17 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.app.AlertDialog;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+
+import java.lang.ref.WeakReference;
+import java.lang.reflect.Field;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -107,6 +112,7 @@ public class AlertDialogTestActivity extends AppCompatActivity {
 
     /**
      * 测试系统AlertDialog 确认，取消
+     * 同时测试利用反射，让对话框不消失
      */
     @OnClick(R.id.alert_dialog_yes_no)
     public void showAlertDialogYesNo(){
@@ -118,15 +124,34 @@ public class AlertDialogTestActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         Log.i(TAG,"showAlertDialogSingleButton删除");
+                        //没有设置mHandler，就不会消失
                     }
                 }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         Log.i(TAG,"showAlertDialogSingleButton取消");
+                        dialogInterface.dismiss();//设置自定义mHandler之后，就必须要调用这个才能让对话框消失
                     }
                 })
 
                 .create();
+
+        try
+        {
+
+            Field field = dialog.getClass().getDeclaredField( "mAlert" );
+            field.setAccessible( true );
+            //   获得mAlert变量的值
+            Object obj = field.get(dialog);
+            field = obj.getClass().getDeclaredField( "mHandler" );
+            field.setAccessible( true );
+            //   修改mHandler变量的值，使用新的ButtonHandler类
+            field.set(obj, new ButtonHandler(dialog));
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
         dialog.setCancelable(false);
         dialog.show();
     }
@@ -136,7 +161,7 @@ public class AlertDialogTestActivity extends AppCompatActivity {
      */
     @OnClick(R.id.alert_dialog_three_buttons)
     public void showThreeButtonsAlertDialog(){
-        Dialog dialog = new AlertDialog.Builder(this,WXDialogConfig.DIALOG_THEME)
+        final Dialog dialog= new AlertDialog.Builder(this,WXDialogConfig.DIALOG_THEME)
                 .setTitle("消息")
                 .setMessage("是否删除文件？")
                 .setIcon(R.mipmap.ic_launcher)
@@ -148,11 +173,13 @@ public class AlertDialogTestActivity extends AppCompatActivity {
                 }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+
                         Log.i(TAG,"showAlertDialogSingleButton取消");
                     }
                 }).setNeutralButton("详情", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+
                         Log.i(TAG,"showAlertDialogSingleButton详情");
                     }
                 })
@@ -371,6 +398,30 @@ public class AlertDialogTestActivity extends AppCompatActivity {
                 }).create();
         dialog.setCancelable(false);
         dialog.show();
+    }
+
+
+    private   static   final   class ButtonHandler extends Handler {
+        // Button clicks have Message.what as the BUTTON{1,2,3} constant
+        private   static   final   int MSG_DISMISS_DIALOG =   1 ;
+
+        private WeakReference < DialogInterface > mDialog;
+
+        public ButtonHandler(DialogInterface dialog) {
+            mDialog =   new WeakReference< DialogInterface >(dialog);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+
+                case DialogInterface.BUTTON_POSITIVE:
+                case DialogInterface.BUTTON_NEGATIVE:
+                case DialogInterface.BUTTON_NEUTRAL:
+                    ((DialogInterface.OnClickListener) msg.obj).onClick(mDialog.get(), msg.what);
+                    break ;
+            }
+        }
     }
 
 }
